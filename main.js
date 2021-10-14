@@ -8,13 +8,13 @@ var movingElementSet = new Set();
 var gameState = {running: true};
 // Add click listener
 document.getRootNode().addEventListener("mousedown", () =>{
-    if (!gameState.running) return;
+    if (!gameState.running) location.reload();
     player.jump();
 });
 // Listen for up arrow and spacebar
 document.getRootNode().addEventListener("keydown", (e) =>{
     if (e.keyCode == 32 || e.keyCode == 38){ 
-        if (!gameState.running) return;
+        if (!gameState.running) location.reload();
         player.jump();
     }
 });
@@ -23,9 +23,8 @@ document.getRootNode().addEventListener("keydown", (e) =>{
 
 
 function touching(d1,d2){
-    let ox = Math.abs(d1.x - d2.x) < (d1.x < d2.x ? d2.width : d1.width);
-    let oy = Math.abs(d1.y - d2.y) < (d1.y < d2.y ? d2.height : d1.height);
-    return ox && oy;
+    return (d1.x < d2.x + d2.width  && d1.x + d1.width  > d2.x &&
+    d1.y < d2.y + d2.height && d1.y + d1.height > d2.y);
 }
 var playerHeight = parseInt(window.getComputedStyle(player.el).getPropertyValue("height"));
 var playerWidth = parseInt(window.getComputedStyle(player.el).getPropertyValue("width"));
@@ -35,7 +34,7 @@ setInterval(() => {
     if (!gameState.running) return;
 
     let playerBox = {
-        x: parseInt(window.getComputedStyle(player.el).getPropertyValue("left")),
+        x: parseInt(window.getComputedStyle(player.el).getPropertyValue("left")) ,
         y: parseInt(window.getComputedStyle(player.el).getPropertyValue("top")),
         width: playerWidth,
         height: playerHeight
@@ -43,7 +42,6 @@ setInterval(() => {
 
     // Check collisions with objects
     for (let obj of movingElementSet){
-        
         let objBox = {
             x: parseInt(window.getComputedStyle(obj.el).getPropertyValue("left")),
             y: parseInt(window.getComputedStyle(obj.el).getPropertyValue("top")),
@@ -55,7 +53,7 @@ setInterval(() => {
             let collisionResult = obj.ProcessCollision(player);
             if (collisionResult === true){
                 StopGame();
-            }   
+            }
         }
 
     }

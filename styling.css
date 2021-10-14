@@ -18,14 +18,35 @@ body{
     position: relative;
 }
 
+#farBackGround {
+    background-image: url(Images/country-platform-back.png);
+}
+
+#nearBackGround {
+    background-image: url(Images/country-platform-forest.png);
+    background-repeat: repeat-x;
+    background-position-y: 100px;
+    animation: bgKey 25s linear ;
+}
+
+@keyframes bgKey {
+    0%{
+        background-position-x: 0px;
+    }
+    100%{
+        background-position-x: -640px;
+    }
+}
+
 #scoreDisplay {
     font-family: 'VT323', monospace;
     font-size: 32pt;
 }
 
+
 .player {
     width: 34px;
-    height: 48px;
+    height: 46px;
     position: absolute;
     top: calc(var(--gameHeight) - 45px);
     left: 80px;
@@ -34,21 +55,23 @@ body{
 }
 
 .jumping{
-    animation: jump 0.3s ease;
+    animation: jump 0.5s linear;
 }
 @keyframes jump{
     0%{top: calc(var(--gameHeight) - 45px);}
+    5%{top: calc(var(--gameHeight) - 75px);}
     20%{top: calc(var(--gameHeight) - 100px);}
     30%{top: calc(var(--gameHeight) - 135px);}
     50%{top: calc(var(--gameHeight) - 150px);}
     70%{top: calc(var(--gameHeight) - 135px);}
     80%{top: calc(var(--gameHeight) - 100px);}
+    95%{top: calc(var(--gameHeight) - 75px);}
     100%{top: calc(var(--gameHeight) - 45px);}
 }
 
 .pear {
-    width: 16px;
-    height: 30px;
+    width: 14px;
+    height: 28px;
     position: absolute;
     left: -30px;
     background-image: url("Images/Pear.png");
@@ -57,8 +80,8 @@ body{
 }
 
 .gavel {
-    width: 48px;
-    height: 31px;
+    width: 46px;
+    height: 29px;
     position: absolute;
     left: -31px;
     background-image: url("Images/Gavel.png");

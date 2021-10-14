@@ -17,7 +17,7 @@ export class Player {
         setTimeout(() => {
             if (this.paused) return;
             this.el.classList.remove("jumping");
-        }, 300);
+        }, 500);
     }
 
 }
