@@ -1,0 +1,55 @@
+:root {
+    --gameHeight: 200px;
+    --gameWidth: 600px
+}
+
+.gameCanvas {
+    width: var(--gameWidth);
+    height: var(--gameHeight);
+    margin: auto;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+.player {
+    width: 30px;
+    height: 40px;
+    position: relative;
+    top: calc(var(--gameHeight) - 40px);
+    left: 80px;
+    background-color: black;
+}
+.jumping{
+    animation: jump 0.3s ease;
+}
+@keyframes jump{
+    0%{top: calc(var(--gameHeight) - 40px);}
+    30%{top: calc(var(--gameHeight) - 80px);}
+    50%{top: calc(var(--gameHeight) - 100px);}
+    70%{top: calc(var(--gameHeight) - 80px);}
+    100%{top: calc(var(--gameHeight) - 40px);}
+}
+
+.pear {
+    width: 16px;
+    height: 30px;
+    position: relative;
+    background-image: url("Images/pear.png");
+    image-rendering: pixelated;
+    
+}
+
+.movingElement {
+    animation: moveAcrossScreen 1s infinite linear;
+
+}
+
+@keyframes moveAcrossScreen {
+    0% {
+      left: var(--gameWidth);
+    }
+  
+    100% {
+      left: -30px;
+    }
+  }
