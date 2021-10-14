@@ -5,6 +5,7 @@ export class Player {
      */
     constructor(canvas){
         this.score = 0;
+        this.paused = false;
         this.el = document.createElement("div");
         this.el.classList.add("player");
         canvas.appendChild(this.el);
@@ -14,6 +15,7 @@ export class Player {
         if (this.el.classList.contains("jumping")) return;
         this.el.classList.add("jumping");
         setTimeout(() => {
+            if (this.paused) return;
             this.el.classList.remove("jumping");
         }, 300);
     }
@@ -97,7 +99,6 @@ export class Gavel extends MovingElement {
     constructor(height, canvas, elementSet, gameState){
         super(height, canvas, elementSet);
         this.el.classList.add("gavel");
-        this.gameState = gameState;
     }
 
     /**
@@ -106,6 +107,6 @@ export class Gavel extends MovingElement {
      */
      ProcessCollision (player){
         super.ProcessCollision(player);
-        this.gameState.running = false;
+        return true;
     }
 }

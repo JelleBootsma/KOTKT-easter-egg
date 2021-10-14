@@ -8,11 +8,13 @@ var movingElementSet = new Set();
 var gameState = {running: true};
 // Add click listener
 document.getRootNode().addEventListener("mousedown", () =>{
+    if (!gameState.running) return;
     player.jump();
 });
 // Listen for up arrow and spacebar
 document.getRootNode().addEventListener("keydown", (e) =>{
     if (e.keyCode == 32 || e.keyCode == 38){ 
+        if (!gameState.running) return;
         player.jump();
     }
 });
@@ -20,58 +22,45 @@ document.getRootNode().addEventListener("keydown", (e) =>{
 
 
 
+function touching(d1,d2){
+    let ox = Math.abs(d1.x - d2.x) < (d1.x < d2.x ? d2.width : d1.width);
+    let oy = Math.abs(d1.y - d2.y) < (d1.y < d2.y ? d2.height : d1.height);
+    return ox && oy;
+}
+var playerHeight = parseInt(window.getComputedStyle(player.el).getPropertyValue("height"));
+var playerWidth = parseInt(window.getComputedStyle(player.el).getPropertyValue("width"));
 
-// Check collisions every 10 ms
+// Check collisions every 16 ms
 setInterval(() => {
     if (!gameState.running) return;
-    let playerHeight = parseInt(window.getComputedStyle(player.el).getPropertyValue("height"));
-    let playerWidth = parseInt(window.getComputedStyle(player.el).getPropertyValue("width"));
-    let playerLeft = parseInt(window.getComputedStyle(player.el).getPropertyValue("left"));
-    let playerTop = parseInt(window.getComputedStyle(player.el).getPropertyValue("top"));
-    let playerRight = playerLeft + playerWidth;
-    let playerBottom = playerTop + playerHeight;
 
+    let playerBox = {
+        x: parseInt(window.getComputedStyle(player.el).getPropertyValue("left")),
+        y: parseInt(window.getComputedStyle(player.el).getPropertyValue("top")),
+        width: playerWidth,
+        height: playerHeight
+    }
 
     // Check collisions with objects
-    
     for (let obj of movingElementSet){
-        let objWidth = parseInt(window.getComputedStyle(obj.el).getPropertyValue("width"));
-        let objHeight = parseInt(window.getComputedStyle(obj.el).getPropertyValue("height"));
-
-
-        let objTop = parseInt(window.getComputedStyle(obj.el).getPropertyValue("top"));
-        let objLeft = parseInt(window.getComputedStyle(obj.el).getPropertyValue("left"));
-        let objBottom = objTop + objHeight;
-        let objRight = objLeft + objWidth;
         
-        if (
-            (
-                (
-                    objTop > playerTop  && // Top of obj below top of player
-                    objTop < playerBottom // Top of obj above bottom of player
-                ) || 
-                (
-                    objBottom < playerBottom &&// Bottom of obj above bottom of player
-                    objBottom > playerTop // Bottom of obj below top of player
-                )
-            ) &&
-            (
-                (
-                    objLeft > playerLeft && //left side of obj on right of left side of player
-                    objLeft < playerRight // left side of obj on left of right side of player
-                ) || 
-                (
-                    objRight > playerLeft && //right side of obj on right of left side of player
-                    objRight < playerRight // right side of obj on left of right side of player
-                ) 
-            )
-        ){
-            obj.ProcessCollision(player);
+        let objBox = {
+            x: parseInt(window.getComputedStyle(obj.el).getPropertyValue("left")),
+            y: parseInt(window.getComputedStyle(obj.el).getPropertyValue("top")),
+            width: parseInt(window.getComputedStyle(obj.el).getPropertyValue("width")),
+            height: parseInt(window.getComputedStyle(obj.el).getPropertyValue("height"))
+        }
+
+        if (touching(playerBox, objBox)){
+            let collisionResult = obj.ProcessCollision(player);
+            if (collisionResult === true){
+                StopGame();
+            }   
         }
 
     }
     DisplayScore(player);
-}, 10);
+}, 16);
 
 
 
@@ -91,9 +80,21 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+function StopGame(){
+    gameState.running = false;
+    player.el.style.animationPlayState = 'paused';
+    player.paused = true;
+    for (let obj of movingElementSet){
+        obj.el.style.animationPlayState = 'paused';
+    }
+    player.el.style.backgroundImage = "url(Images/Stop.png)";
+}
+
 async function AddPearsContinuously(){
+
     while (true){
-        await sleep(RandomNumberBetween(500, 1500));
+        await sleep(RandomNumberBetween(1500, 2500));
+        if (gameState.running === false) return;
         let height = RandomNumberBetween(50, 170);
         if (RandomNumberBetween(1, 20) == 6){
             new Classes.GigaPear(height, canvas, movingElementSet);
@@ -107,9 +108,10 @@ async function AddPearsContinuously(){
 
 async function AddGavelsContinously(){
     while (true){
-        await sleep(RandomNumberBetween(750, 2000));
+        await sleep(RandomNumberBetween(1750, 3000));
+        if (gameState.running === false) return;
         let height = RandomNumberBetween(50, 170);
-        new Classes.Gavel(height, canvas, movingElementSet, gameState);
+        new Classes.Gavel(height, canvas, movingElementSet);
         
     }
     
@@ -125,6 +127,6 @@ async function AddGavelsContinously(){
     else scoreDisplay.textContent = `${player.score} Kevin Punten`;
 }
 
-
+new Classes.Pear(120, canvas, movingElementSet)
 AddPearsContinuously();
 AddGavelsContinously();
