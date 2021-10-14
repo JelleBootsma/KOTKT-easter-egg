@@ -86,6 +86,7 @@ function StopGame(){
         obj.el.style.animationPlayState = 'paused';
     }
     player.el.style.backgroundImage = "url(Images/Stop.png)";
+    document.getElementById("nearBackGround").style.animationPlayState = 'paused';
 }
 
 async function AddPearsContinuously(){
