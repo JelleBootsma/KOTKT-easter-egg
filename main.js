@@ -6,7 +6,7 @@ var scoreDisplay = document.getElementById("scoreDisplay");
 var player = new Classes.Player(canvas);
 var movingElementSet = new Set();
 // Add click listener
-document.getRootNode().addEventListener("click", () =>{
+document.getRootNode().addEventListener("mousedown", () =>{
     player.jump();
 });
 // Listen for up arrow and spacebar
