@@ -3,7 +3,7 @@
     --gameWidth: 600px
 }
 
-.gameCanvas {
+#gameCanvas {
     width: var(--gameWidth);
     height: var(--gameHeight);
     margin: auto;
@@ -20,13 +20,15 @@
     background-color: black;
 }
 .jumping{
-    animation: jump 0.3s ease;
+    animation: jump 0.3s ease-out;
 }
 @keyframes jump{
     0%{top: calc(var(--gameHeight) - 40px);}
-    30%{top: calc(var(--gameHeight) - 80px);}
-    50%{top: calc(var(--gameHeight) - 100px);}
-    70%{top: calc(var(--gameHeight) - 80px);}
+    20%{top: calc(var(--gameHeight) - 80px);}
+    30%{top: calc(var(--gameHeight) - 120px);}
+    50%{top: calc(var(--gameHeight) - 150px);}
+    70%{top: calc(var(--gameHeight) - 120px);}
+    80%{top: calc(var(--gameHeight) - 80px);}
     100%{top: calc(var(--gameHeight) - 40px);}
 }
 
@@ -34,13 +36,14 @@
     width: 16px;
     height: 30px;
     position: relative;
+    left: -30px;
     background-image: url("Images/pear.png");
     image-rendering: pixelated;
     
 }
 
 .movingElement {
-    animation: moveAcrossScreen 1s infinite linear;
+    animation: moveAcrossScreen 1s linear;
 
 }
 
