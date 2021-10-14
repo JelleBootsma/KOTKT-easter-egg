@@ -4,6 +4,7 @@ export class Player {
      * @param {Element} canvas 
      */
     constructor(canvas){
+        this.score = 0;
         this.el = document.createElement("div");
         this.el.classList.add("player");
         canvas.appendChild(this.el);
@@ -25,15 +26,31 @@ export class MovingElement{
      * Abstract class for elements moving across the screen
      * @param {number} height Y location of the moving element
      * @param {Element} canvas Game canvas to add the moving element to
+     * @param {Set} elementSet Set of elements to which this element belongs. Element will be auto deleted after animation end
      */
-    constructor(height, canvas){
+    constructor(height, canvas, elementSet){
+        this.elementSet = elementSet;
         this.el = document.createElement("div");
         this.el.classList.add("movingElement");
         this.el.style.top = `${height}px`;
         this.el.addEventListener('animationend', () => {
-            this.el.remove();
-        })
+            this.Destroy();
+        });
         canvas.appendChild(this.el);
+        this.elementSet?.add(this);
+    }
+
+    /**
+     * Process collision with player
+     * @param {Player} player 
+     */
+    ProcessCollision (player){
+
+    }
+
+    Destroy () {
+        this.el.remove();
+        this.elementSet?.delete(this);
     }
 }
 
@@ -43,9 +60,20 @@ export class Pear extends MovingElement {
      * 
      * @param {number} height Y location of the pear
      * @param {Element} canvas Game canvas to add the pear to
+     * @param {Set} elementSet Set of elements to which this element belongs. Element will be auto deleted after animation end
      */
-    constructor(height, canvas){
-        super(height, canvas);
+    constructor(height, canvas, elementSet){
+        super(height, canvas, elementSet);
         this.el.classList.add("pear");
+    }
+
+    /**
+     * Process pear collision with player
+     * @param {Player} player 
+     */
+     ProcessCollision (player){
+        super.ProcessCollision(player);
+        this.Destroy();
+        player.score++;
     }
 }
