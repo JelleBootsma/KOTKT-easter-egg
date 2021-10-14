@@ -5,6 +5,7 @@ var canvas = document.getElementById("gameCanvas");
 var scoreDisplay = document.getElementById("scoreDisplay");
 var player = new Classes.Player(canvas);
 var movingElementSet = new Set();
+var gameState = {running: true};
 // Add click listener
 document.getRootNode().addEventListener("mousedown", () =>{
     player.jump();
@@ -21,7 +22,8 @@ document.getRootNode().addEventListener("keydown", (e) =>{
 
 
 // Check collisions every 10 ms
-var gameRunning = setInterval(() => {
+setInterval(() => {
+    if (!gameState.running) return;
     let playerHeight = parseInt(window.getComputedStyle(player.el).getPropertyValue("height"));
     let playerWidth = parseInt(window.getComputedStyle(player.el).getPropertyValue("width"));
     let playerLeft = parseInt(window.getComputedStyle(player.el).getPropertyValue("left"));
@@ -93,8 +95,22 @@ async function AddPearsContinuously(){
     while (true){
         await sleep(RandomNumberBetween(500, 1500));
         let height = RandomNumberBetween(50, 170);
-        console.log(height);
-        new Classes.Pear(height, canvas, movingElementSet);
+        if (RandomNumberBetween(1, 20) == 6){
+            new Classes.GigaPear(height, canvas, movingElementSet);
+        }
+        else {
+            new Classes.Pear(height, canvas, movingElementSet);
+        }
+    }
+    
+}
+
+async function AddGavelsContinously(){
+    while (true){
+        await sleep(RandomNumberBetween(750, 2000));
+        let height = RandomNumberBetween(50, 170);
+        new Classes.Gavel(height, canvas, movingElementSet, gameState);
+        
     }
     
 }
@@ -111,3 +127,4 @@ async function AddPearsContinuously(){
 
 
 AddPearsContinuously();
+AddGavelsContinously();

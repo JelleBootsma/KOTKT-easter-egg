@@ -24,24 +24,26 @@ body{
 }
 
 .player {
-    width: 30px;
-    height: 40px;
+    width: 34px;
+    height: 48px;
     position: absolute;
-    top: calc(var(--gameHeight) - 40px);
+    top: calc(var(--gameHeight) - 45px);
     left: 80px;
-    background-color: black;
+    background-image: url(Images/run.gif);
+    image-rendering: pixelated;
 }
+
 .jumping{
     animation: jump 0.3s ease;
 }
 @keyframes jump{
-    0%{top: calc(var(--gameHeight) - 40px);}
+    0%{top: calc(var(--gameHeight) - 45px);}
     20%{top: calc(var(--gameHeight) - 100px);}
     30%{top: calc(var(--gameHeight) - 135px);}
     50%{top: calc(var(--gameHeight) - 150px);}
     70%{top: calc(var(--gameHeight) - 135px);}
     80%{top: calc(var(--gameHeight) - 100px);}
-    100%{top: calc(var(--gameHeight) - 40px);}
+    100%{top: calc(var(--gameHeight) - 45px);}
 }
 
 .pear {
@@ -53,6 +55,16 @@ body{
     image-rendering: pixelated;
     
 }
+
+.gavel {
+    width: 48px;
+    height: 31px;
+    position: absolute;
+    left: -31px;
+    background-image: url("Images/Gavel.png");
+    image-rendering: pixelated;
+}
+
 
 .movingElement {
     animation: moveAcrossScreen 1s linear;

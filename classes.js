@@ -65,6 +65,7 @@ export class Pear extends MovingElement {
     constructor(height, canvas, elementSet){
         super(height, canvas, elementSet);
         this.el.classList.add("pear");
+        this.worth = 1;
     }
 
     /**
@@ -74,6 +75,37 @@ export class Pear extends MovingElement {
      ProcessCollision (player){
         super.ProcessCollision(player);
         this.Destroy();
-        player.score++;
+        player.score += this.worth;
+    }
+}
+
+export class GigaPear extends Pear {
+    constructor(height, canvas, elementSet){
+        super(height, canvas, elementSet);
+        this.worth = 10;
+        this.el.style.filter = "hue-rotate(270deg)";
+    }
+}
+
+export class Gavel extends MovingElement {
+    /**
+     * Create a gavel obstacle, which the player must avoid
+     * @param {number} height 
+     * @param {Element} canvas 
+     * @param {Set} elementSet 
+     */
+    constructor(height, canvas, elementSet, gameState){
+        super(height, canvas, elementSet);
+        this.el.classList.add("gavel");
+        this.gameState = gameState;
+    }
+
+    /**
+     * Process gavel collision with player
+     * @param {Player} player 
+     */
+     ProcessCollision (player){
+        super.ProcessCollision(player);
+        this.gameState.running = false;
     }
 }
