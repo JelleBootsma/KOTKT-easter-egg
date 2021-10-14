@@ -26,7 +26,7 @@ body{
     background-image: url(Images/country-platform-forest.png);
     background-repeat: repeat-x;
     background-position-y: 100px;
-    animation: bgKey 25s linear ;
+    animation: bgKey 25s linear infinite;
 }
 
 @keyframes bgKey {
